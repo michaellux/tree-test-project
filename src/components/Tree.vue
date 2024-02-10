@@ -7,13 +7,13 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import _ from 'lodash';
 import Tree from 'primevue/tree';
 import { services }  from '../data/tree.json';
 
 // eslint-disable-next-line no-unused-vars
-const rawData = ref(services);
+const rawData = ref(_.orderBy(services, ['sorthead'], ['asc']));
 
-console.log(services.value);
 const nodes = computed(() => {
   // eslint-disable-next-line no-unused-vars
   const nodeMap = new Map();
@@ -24,7 +24,7 @@ const nodes = computed(() => {
       key: service.id,
       label: `${service.name} ${+service.price != 0 ?  `(${service.price})` : ""}`,
       children: [],
-      leaf: service.node ===  0
+      leaf: service.node ===  0,
     };
     nodeMap.set(service.id, node);
     if (!service.head) {
@@ -36,7 +36,6 @@ const nodes = computed(() => {
       }
     }
   });
-
   return roots;
 });
 </script>
